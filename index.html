@@ -1,162 +1,35 @@
-/* ===============================
-   DARK MODE PERMANENTE
-================================ */
-:root {
-  --bg: #020617;
-  --text: #e5e7eb;
-  --muted: #94a3b8;
-  --border: #1e293b;
-  --accent: #2563eb;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Movimientos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-/* ===============================
-   BASE
-================================ */
-* {
-  box-sizing: border-box;
-}
+<header>
+  <h1>Registro de Movimientos</h1>
+</header>
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 16px;
-}
+<section class="form">
+  <input id="monto" type="number" placeholder="Monto" />
+  <input id="remitente" placeholder="Remitente" />
+  <input id="destinatario" placeholder="Destinatario" />
+  <input id="fecha" type="date" />
+  <input id="referencia" placeholder="Referencia (opcional)" />
+  <button id="guardar">Registrar</button>
+</section>
 
-/* ===============================
-   HEADER
-================================ */
-header {
-  padding: 20px;
-  border-bottom: 1px solid var(--border);
-}
+<section class="ledger">
+  <div id="lista"></div>
+</section>
 
-header h1 {
-  font-size: 22px;
-  font-weight: 600;
-}
+<footer class="totales">
+  <span>Total movimientos: <strong id="totalMovs">0</strong></span>
+  <span>Total monto: <strong id="totalMonto">0</strong></span>
+</footer>
 
-/* ===============================
-   FORMULARIO
-================================ */
-.form {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.form input {
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid var(--border);
-  padding: 14px 6px;
-  font-size: 16px;
-  color: var(--text);
-}
-
-.form input::placeholder {
-  color: var(--muted);
-}
-
-.form input:focus {
-  outline: none;
-  border-bottom-color: var(--accent);
-}
-
-.form button {
-  margin-top: 6px;
-  padding: 14px;
-  background: var(--accent);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-/* ===============================
-   LEDGER (MOVIMIENTOS)
-================================ */
-.ledger {
-  padding: 0 20px;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-/* IZQUIERDA */
-.left {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.remitente {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.fecha {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-/* DERECHA */
-.right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-
-.top {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.monto {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.destinatario {
-  font-size: 14px;
-}
-
-.delete {
-  font-size: 18px;
-  color: #ef4444;
-  cursor: pointer;
-}
-
-/* ===============================
-   FOOTER
-================================ */
-.totales {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  font-size: 15px;
-}
-
-.fecha-input {
-  color-scheme: dark; /* MUY importante para iOS */
-}
-
-.row {
-  cursor: pointer;
-}
-
-.row:active {
-  opacity: 0.7;
-}
+<script src="app.js"></script>
+</body>
+</html>
