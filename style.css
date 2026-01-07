@@ -21,7 +21,7 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
   background: var(--bg);
   color: var(--text);
-  font-size: 16px; /* base más grande */
+  font-size: 16px;
 }
 
 /* ===============================
@@ -33,7 +33,7 @@ header {
 }
 
 header h1 {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
 }
 
@@ -42,7 +42,7 @@ header h1 {
 ================================ */
 .form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 14px;
   padding: 18px 20px;
   border-bottom: 1px solid var(--border);
@@ -59,7 +59,6 @@ header h1 {
 
 .form input::placeholder {
   color: var(--muted);
-  font-size: 15px;
 }
 
 .form input:focus {
@@ -68,7 +67,7 @@ header h1 {
 }
 
 .form button {
-  grid-column: 1 / -1;
+  margin-top: 6px;
   padding: 14px;
   background: var(--accent);
   border: none;
@@ -79,145 +78,85 @@ header h1 {
 }
 
 /* ===============================
-   LEDGER
+   LEDGER (MOVIMIENTOS)
 ================================ */
 .ledger {
   padding: 0 20px;
 }
 
-/* filas */
 .row {
   display: grid;
-  grid-template-columns: 120px 1.2fr 1.2fr 110px 32px;
-  gap: 12px;
-  padding: 14px 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--border);
-  align-items: center;
-  font-size: 16px;
 }
 
-/* encabezado */
-.row.header {
-  font-size: 14px;
-  color: var(--muted);
-  font-weight: 500;
-  padding-top: 18px;
-  padding-bottom: 10px;
-}
-
-/* columnas */
-.amount {
-  text-align: right;
-  font-weight: 600;
-  font-size: 17px;
-}
-
-.name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.date {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text);
-  text-align: right;
-}
-
-.delete {
-  color: #ef4444;
-  cursor: pointer;
-  text-align: center;
-  font-size: 20px;
-}
-
-/* ===============================
-   FOOTER TOTALES
-================================ */
-.totales {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-  font-size: 16px;
+/* IZQUIERDA */
+.left {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 6px;
 }
 
-/* ===============================
-   LEDGER MOBILE-FIRST
-================================ */
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "amount delete"
-    "fromto fromto"
-    "date date";
-  gap: 6px 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+.remitente {
+  font-size: 16px;
+  font-weight: 500;
 }
 
-.amount {
-  grid-area: amount;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.fromto {
-  grid-area: fromto;
-  font-size: 14px;
-  color: var(--muted);
-}
-
-.date {
-  grid-area: date;
+.fecha {
   font-size: 13px;
   color: var(--muted);
 }
 
+/* DERECHA */
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.monto {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.destinatario {
+  font-size: 14px;
+}
+
 .delete {
-  grid-area: delete;
   font-size: 18px;
   color: #ef4444;
   cursor: pointer;
-  text-align: right;
 }
 
 /* ===============================
-   FORM MÁS COMPACTO EN MÓVIL
+   FOOTER
 ================================ */
-
-.form {
-  grid-template-columns: 1fr;
+.totales {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
 }
 
-.form input {
-  font-size: 16px;
+.fecha-input {
+  color-scheme: dark; /* MUY importante para iOS */
 }
 
-/* ===============================
-   VISTA ESCRITORIO
-================================ */
-@media (min-width: 768px) {
-  .row {
-    grid-template-columns: 120px 1fr 1fr 110px 32px;
-    grid-template-areas: none;
-    gap: 12px;
-    align-items: center;
-  }
+.row {
+  cursor: pointer;
+}
 
-  .fromto {
-    grid-column: 2 / span 2;
-    color: var(--text);
-  }
-
-  .amount {
-    font-size: 16px;
-  }
-
-  .date {
-    text-align: right;
-  }
+.row:active {
+  opacity: 0.7;
 }
