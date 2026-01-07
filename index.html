@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Movimientos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>Registro de Movimientos</h1>
+</header>
+
+<section class="form">
+  <input id="monto" type="number" placeholder="Monto" />
+  <input id="remitente" placeholder="Remitente" />
+  <input id="destinatario" placeholder="Destinatario" />
+  <input id="referencia" placeholder="Referencia (opcional)" />
+  <button id="guardar">Registrar</button>
+</section>
+
+<section class="ledger">
+  <div id="lista"></div>
+</section>
+
+<footer class="totales">
+  <div>Total movimientos: <strong id="totalMovs">0</strong></div>
+  <div>Total monto: <strong id="totalMonto">0</strong></div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
