@@ -1,5 +1,4 @@
 let movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
-let editId = null;
 
 const lista = document.getElementById("lista");
 const totalMovs = document.getElementById("totalMovs");
@@ -10,12 +9,12 @@ const remitenteEl = document.getElementById("remitente");
 const destinatarioEl = document.getElementById("destinatario");
 const referenciaEl = document.getElementById("referencia");
 const fechaEl = document.getElementById("fecha");
-const guardarBtn = document.getElementById("guardar");
 
 // Fecha de hoy por defecto
 fechaEl.value = new Date().toISOString().slice(0, 10);
 
-guardarBtn.onclick = () => {
+/* REGISTRAR NUEVO */
+document.getElementById("guardar").onclick = () => {
   const monto = Number(montoEl.value);
   if (!monto) return;
 
@@ -23,40 +22,29 @@ guardarBtn.onclick = () => {
     ? new Date(fechaEl.value + "T00:00:00")
     : new Date();
 
-  const movimiento = {
-    id: editId ?? Date.now(),
+  movimientos.unshift({
+    id: Date.now(),
     monto,
     remitente: remitenteEl.value.trim(),
     destinatario: destinatarioEl.value.trim(),
     referencia: referenciaEl.value.trim(),
     fecha: fechaObj.toLocaleDateString("es-ES")
-  };
-
-  if (editId) {
-    // EDITAR
-    movimientos = movimientos.map(m =>
-      m.id === editId ? movimiento : m
-    );
-  } else {
-    // NUEVO
-    movimientos.unshift(movimiento);
-  }
+  });
 
   localStorage.setItem("movimientos", JSON.stringify(movimientos));
-  resetForm();
+  limpiarFormulario();
   render();
 };
 
-function resetForm() {
+function limpiarFormulario() {
   montoEl.value = "";
   remitenteEl.value = "";
   destinatarioEl.value = "";
   referenciaEl.value = "";
   fechaEl.value = new Date().toISOString().slice(0, 10);
-  editId = null;
-  guardarBtn.textContent = "Registrar";
 }
 
+/* RENDER + EDICIÓN INLINE */
 function render() {
   lista.innerHTML = "";
   let suma = 0;
@@ -65,18 +53,31 @@ function render() {
     suma += m.monto;
 
     lista.innerHTML += `
-      <div class="row" onclick="editar(${m.id})">
+      <div class="row">
         <div class="left">
-          <div class="remitente">${m.remitente}</div>
-          <div class="fecha">${m.fecha}</div>
+          <div class="remitente" contenteditable="true"
+            onblur="updateField(${m.id}, 'remitente', this.innerText)">
+            ${m.remitente}
+          </div>
+
+          <div class="fecha" onclick="editFecha(this, ${m.id})">
+            ${m.fecha}
+          </div>
         </div>
 
         <div class="right">
           <div class="top">
-            <div class="monto">${m.monto.toLocaleString()}</div>
-            <div class="delete" onclick="event.stopPropagation(); del(${m.id})">×</div>
+            <div class="monto" contenteditable="true"
+              onblur="updateMonto(${m.id}, this.innerText)">
+              ${m.monto.toLocaleString()}
+            </div>
+            <div class="delete" onclick="del(${m.id})">×</div>
           </div>
-          <div class="destinatario">${m.destinatario}</div>
+
+          <div class="destinatario" contenteditable="true"
+            onblur="updateField(${m.id}, 'destinatario', this.innerText)">
+            ${m.destinatario}
+          </div>
         </div>
       </div>
     `;
@@ -86,30 +87,55 @@ function render() {
   totalMonto.textContent = suma.toLocaleString();
 }
 
-function editar(id) {
-  const m = movimientos.find(x => x.id === id);
-  if (!m) return;
-
-  montoEl.value = m.monto;
-  remitenteEl.value = m.remitente;
-  destinatarioEl.value = m.destinatario;
-  referenciaEl.value = m.referencia || "";
-
-  // Convertir DD/MM/YYYY → YYYY-MM-DD
-  const [d, mo, y] = m.fecha.split("/");
-  fechaEl.value = `${y}-${mo.padStart(2, "0")}-${d.padStart(2, "0")}`;
-
-  editId = id;
-  guardarBtn.textContent = "Guardar cambios";
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
+/* ACTUALIZACIONES */
+function updateField(id, field, value) {
+  movimientos = movimientos.map(m =>
+    m.id === id ? { ...m, [field]: value.trim() } : m
+  );
+  guardarYRender();
 }
 
+function updateMonto(id, value) {
+  const monto = Number(value.replace(/\D/g, "")) || 0;
+  movimientos = movimientos.map(m =>
+    m.id === id ? { ...m, monto } : m
+  );
+  guardarYRender();
+}
+
+function editFecha(el, id) {
+  const input = document.createElement("input");
+  input.type = "date";
+
+  const [d, m, y] = el.innerText.split("/");
+  input.value = `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+
+  input.onblur = () => {
+    if (input.value) {
+      const fechaObj = new Date(input.value + "T00:00:00");
+      movimientos = movimientos.map(m =>
+        m.id === id
+          ? { ...m, fecha: fechaObj.toLocaleDateString("es-ES") }
+          : m
+      );
+      guardarYRender();
+    }
+  };
+
+  el.replaceWith(input);
+  input.focus();
+}
+
+function guardarYRender() {
+  localStorage.setItem("movimientos", JSON.stringify(movimientos));
+  render();
+}
+
+/* ELIMINAR */
 function del(id) {
   if (!confirm("Eliminar movimiento?")) return;
   movimientos = movimientos.filter(m => m.id !== id);
-  localStorage.setItem("movimientos", JSON.stringify(movimientos));
-  render();
+  guardarYRender();
 }
 
 render();
